@@ -1,71 +1,68 @@
-###################
-What is CodeIgniter
-###################
+###### Aplikasi android sederhana untuk menampilkan inputan data kedalam listview edit oleh Muhammadifan
+### Dibuat Oleh :
+#### Muhammadifan
+### NIM
+#### G.111.21.0006
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+package com.example.ujianandroid;
 
-*******************
-Release Information
-*******************
+import androidx.appcompat.app.AppCompatActivity;
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-**************************
-Changelog and New Features
-**************************
+import java.util.ArrayList;
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+public class MainActivity extends AppCompatActivity {
 
-*******************
-Server Requirements
-*******************
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-PHP version 5.6 or newer is recommended.
+        EditText edNamaDepan = (EditText) findViewById(R.id.edNamaDepan);
+        EditText edNamaBelakang = (EditText) findViewById(R.id.edNamaBelakang);
+        EditText edUmur = (EditText) findViewById(R.id.edUmur);
+        Button btnSimpan = (Button) findViewById(R.id.btnSimpan);
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+        ArrayList<String> daftar_nama = new ArrayList<>();
 
-************
-Installation
-************
+        Intent intent_list = new Intent(MainActivity.this, ListActivity.class);
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String isian_nama_depan = edNamaDepan.getText().toString();
+                String isian_nama_belakang = edNamaBelakang.getText().toString();
+                String isian_umur = edUmur.getText().toString();
 
-*******
-License
-*******
-
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
-
-*********
-Resources
-*********
-
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
-
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
-
-***************
-Acknowledgement
-***************
-
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+                if(isian_nama_depan.isEmpty() && isian_nama_belakang.isEmpty() && isian_umur.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Isian masih kosong", Toast.LENGTH_SHORT).show();
+                }else{
+                    Integer counter = Integer.valueOf(isian_umur);
+                    String nama_lengkap = isian_nama_depan.concat(" ").concat(isian_nama_belakang).concat(", ").concat("Status : ");
+                    daftar_nama.clear();
+                    for(Integer i = 1; i <= counter; i++) {
+                        if(counter >= 1 && counter <= 10) {
+                            daftar_nama.add( i + " " +  nama_lengkap.concat("Anak"));
+                        } else if(counter >= 11 && counter <= 20) {
+                            daftar_nama.add( i + " " +  nama_lengkap.concat("Remaja"));
+                        } else if(counter >= 21 && counter <= 40) {
+                            daftar_nama.add( i + " " +  nama_lengkap.concat("Dewasa"));
+                        } else {
+                            daftar_nama.add( i + " " +  nama_lengkap.concat("Tua"));
+                        }
+                        edNamaDepan.setText("");
+                        edNamaBelakang.setText("");
+                        intent_list.putStringArrayListExtra("daftar_nama", daftar_nama);
+                        startActivity(intent_list);
+                    }
+                }
+            }
+        });
+    }
+}
